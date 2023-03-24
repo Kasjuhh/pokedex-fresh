@@ -1,8 +1,8 @@
-# fresh project
+# Pokedex
 
 ### Usage
 
-Start the project:
+Start the website:
 
 ```
 deno task start
