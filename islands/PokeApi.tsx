@@ -10,67 +10,103 @@ interface PokemonProps {
 }
 
 export default function PokeApi(props: PokemonProps) {
-    const [input, setInput] = useState(props.pokemon ? props.pokemon : "charmander");
-    const [data, setData] = useState<Pokemon | null>(null);
-    const [typeData, setTypeData] = useState<TypeData | null>(null);
-    const [evolutionChain, setEvolutionChain] = useState<EvolutionStage[] | null>(null);
-    const [speciesData, setSpeciesData] = useState<Species | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    window.onload = () => {
-      fetchPokemon(input.toLowerCase(), setData, setTypeData, setError, setEvolutionChain, setSpeciesData)
-    };
+  const [input, setInput] = useState(
+    props.pokemon ? props.pokemon : "charmander"
+  );
+  const [data, setData] = useState<Pokemon | null>(null);
+  const [typeData, setTypeData] = useState<TypeData | null>(null);
+  const [evolutionChain, setEvolutionChain] = useState<EvolutionStage[] | null>(
+    null
+  );
+  const [speciesData, setSpeciesData] = useState<Species | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  window.onload = () => {
+    fetchPokemon(
+      input.toLowerCase(),
+      setData,
+      setTypeData,
+      setError,
+      setEvolutionChain,
+      setSpeciesData
+    );
+  };
 
-    return (
+  return (
     <div>
       <div class="search">
-      <p>Search for any pokemon 😊👇</p>
-        <input type="text" id="pokeInput" value={input} onChange={(e) => setInput(e?.target?.value)} onKeyDown={(e) => keyDown(e, (e?.target?.value).toLowerCase(), setData, setTypeData, setError, setEvolutionChain, setSpeciesData)}></input>
+        <p>Search for any pokemon 😊👇</p>
+        <input
+          type="text"
+          id="pokeInput"
+          value={input}
+          onChange={(e) => setInput(e?.target?.value)}
+          onKeyDown={(e) =>
+            keyDown(
+              e,
+              (e?.target?.value).toLowerCase(),
+              setData,
+              setTypeData,
+              setError,
+              setEvolutionChain,
+              setSpeciesData
+            )
+          }
+        ></input>
         {/* <input type="submit" value="Search 🔎" onClick={() => fetchPokemon(input.toLowerCase(), setData, setTypeData, setError, setEvolutionChain, setSpeciesData)}/> */}
       </div>
-     {error && ( // render error if it exists
-       <p style={{color: "red"}}>{error}</p>
-     )}
-     {data && ( // render data if pokemon it exists
-       <div class="pokemon mt-8 markdown-body">
-         <h1>{titleCaseWord(data.name)}</h1>
-         <img src={data.sprites.front_default} alt={data.name}/>
-         <h2>Type</h2>
-         <p>{data.types.map(t => t.type.name + " " + pokemonTypes[t.type.name]).join(", ")}</p>
-         {/* <p>Height: {data.height}</p>
-         <p>Weight: {data.weight}</p> */}
-         {typeData && ( // render type data if it exists
-           <div>
-            <h2>Strengths</h2>
-             <ul>
-               {typeData.damage_relations.double_damage_to.map(type => (
-                 <li>{titleCaseWord(type.name)} {pokemonTypes[type.name]}</li>
-               ))}
-             </ul>
-             <h2>Weaknesses</h2>
-             <ul>
-               {typeData.damage_relations.double_damage_from.map(type => (
-                 <li>{titleCaseWord(type.name)} {pokemonTypes[type.name]}</li>
-               ))}
-             </ul>
-           </div>
-         )}
-         {evolutionChain && ( // render evolution chain if it exists
-        <EvolutionChain evolutionChain={evolutionChain}/>
+      {error && ( // render error if it exists
+        <p style={{ color: "red" }}>{error}</p>
       )}
-       </div>
-     )}
+      {data && ( // render data if pokemon it exists
+        <div class="pokemon mt-8 markdown-body">
+          <h1>{titleCaseWord(data.name)}</h1>
+          <img src={data.sprites.front_default} alt={data.name} />
+          <h2>Type</h2>
+          <p>
+            {data.types
+              .map((t) => t.type.name + " " + pokemonTypes[t.type.name])
+              .join(", ")}
+          </p>
+          {/* <p>Height: {data.height}</p>
+         <p>Weight: {data.weight}</p> */}
+          {typeData && ( // render type data if it exists
+            <div>
+              <h2>Strengths</h2>
+              <ul>
+                {typeData.damage_relations.double_damage_to.map((type) => (
+                  <li>
+                    {titleCaseWord(type.name)} {pokemonTypes[type.name]}
+                  </li>
+                ))}
+              </ul>
+              <h2>Weaknesses</h2>
+              <ul>
+                {typeData.damage_relations.double_damage_from.map((type) => (
+                  <li>
+                    {titleCaseWord(type.name)} {pokemonTypes[type.name]}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {evolutionChain && ( // render evolution chain if it exists
+            <EvolutionChain evolutionChain={evolutionChain} />
+          )}
+        </div>
+      )}
     </div>
   );
-
 }
 
-async function fetchPokemon(pokemon: string,
-                            setData: (data: Pokemon | null) => void,
-                            setTypeData: (typeData: TypeData | null) => void,
-                            setError: (error: string | null) => void,
-                            setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void,
-                            setSpeciesData: (species: Species | null) => void) {
-  const url = 'https://pokeapi.co/api/v2/pokemon/' + pokemon;
+async function fetchPokemon(
+  pokemon: string,
+  setData: (data: Pokemon | null) => void,
+  setTypeData: (typeData: TypeData | null) => void,
+  setError: (error: string | null) => void,
+  setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void,
+  setSpeciesData: (species: Species | null) => void
+) {
+  const url = "https://pokeapi.co/api/v2/pokemon/" + pokemon;
   setData(null);
   setTypeData(null);
   setError(null);
@@ -84,15 +120,17 @@ async function fetchPokemon(pokemon: string,
     const data: Pokemon = await response.json();
     setData(data);
     fetchTypeData(data.types[0].type.url, setTypeData);
-    const species: Species = await fetchPokemonSpecies(pokemon, setSpeciesData)
+    const species: Species = await fetchPokemonSpecies(pokemon, setSpeciesData);
     fetchEvolutionChain(species.evolution_chain.url, setEvolutionChain);
   } catch (error) {
     setError(error.message);
   }
 }
 
-async function fetchTypeData(url: string,
-                            setTypeData: (typeData: TypeData | null) => void) {
+async function fetchTypeData(
+  url: string,
+  setTypeData: (typeData: TypeData | null) => void
+) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -106,9 +144,12 @@ async function fetchTypeData(url: string,
   }
 }
 
-async function fetchPokemonSpecies(pokemon: string, setSpeciesData: (species: Species | null) => void): Promise<Species> {
+async function fetchPokemonSpecies(
+  pokemon: string,
+  setSpeciesData: (species: Species | null) => void
+): Promise<Species> {
   // fetch the species json
-  const url = 'https://pokeapi.co/api/v2/pokemon-species/' + pokemon;
+  const url = "https://pokeapi.co/api/v2/pokemon-species/" + pokemon;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}`);
@@ -127,20 +168,32 @@ async function fetchPokemonSpecies(pokemon: string, setSpeciesData: (species: Sp
   return pokemonSpecies;
 }
 
-async function keyDown(e: KeyboardEvent,
-                      pokemon: string,
-                      setData: (data: Pokemon | null) => void,
-                      setTypeData: (typeData: TypeData | null) => void,
-                      setError: (error: string | null) => void,
-                      setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void,
-                      setSpeciesData: (species: Species | null) => void) {
-  if(e.code === "Enter") {
-    await fetchPokemon(pokemon, setData, setTypeData, setError, setEvolutionChain, setSpeciesData)
+async function keyDown(
+  e: KeyboardEvent,
+  pokemon: string,
+  setData: (data: Pokemon | null) => void,
+  setTypeData: (typeData: TypeData | null) => void,
+  setError: (error: string | null) => void,
+  setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void,
+  setSpeciesData: (species: Species | null) => void
+) {
+  if (e.code === "Enter") {
+    await fetchPokemon(
+      pokemon,
+      setData,
+      setTypeData,
+      setError,
+      setEvolutionChain,
+      setSpeciesData
+    );
   }
 }
 
 // a function that fetches the evolution chain from the pokeapi and returns an array of evolution stages
-async function fetchEvolutionChain(url: string, setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void) {
+async function fetchEvolutionChain(
+  url: string,
+  setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void
+) {
   // Fetch the evolution chain json
   const response = await fetch(url);
   if (!response.ok) {
@@ -163,8 +216,9 @@ async function fetchEvolutionChain(url: string, setEvolutionChain: (evolutionSta
       minLevel: stage.evolution_details[0]?.min_level ?? null,
       trigger: titleCaseWord(stage.evolution_details[0]?.trigger?.name) ?? null,
       item: stage.evolution_details[0]?.item?.name ?? null,
-      conditions: stage.evolution_details[0]?.conditions?.map((c: any) => c.name) ?? null,
-      isBaby: stage.is_baby
+      conditions:
+        stage.evolution_details[0]?.conditions?.map((c: any) => c.name) ?? null,
+      isBaby: stage.is_baby,
     };
     // add the evolution stage object to the array
     stages.push(evolutionStage);
@@ -178,7 +232,7 @@ async function fetchEvolutionChain(url: string, setEvolutionChain: (evolutionSta
 
   // call the helper function with the initial chain object
   addStage(chain);
-  setEvolutionChain(stages)
+  setEvolutionChain(stages);
 }
 
 //util
@@ -205,5 +259,5 @@ const pokemonTypes: Record<string, string> = {
   dragon: "🐲",
   dark: "🌑",
   steel: "⚙️",
-  fairy: "✨"
+  fairy: "✨",
 };
