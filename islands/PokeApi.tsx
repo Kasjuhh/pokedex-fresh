@@ -52,7 +52,6 @@ export default function PokeApi(props: PokemonProps) {
             )
           }
         ></input>
-        {/* <input type="submit" value="Search 🔎" onClick={() => fetchPokemon(input.toLowerCase(), setData, setTypeData, setError, setEvolutionChain, setSpeciesData)}/> */}
       </div>
       {error && ( // render error if it exists
         <p style={{ color: "red" }}>{error}</p>
@@ -64,7 +63,7 @@ export default function PokeApi(props: PokemonProps) {
           <h2>Type</h2>
           <p>
             {data.types
-              .map((t) => t.type.name + " " + pokemonTypes[t.type.name])
+              .map((t) => titleCaseWord(t.type.name) + " " + titleCaseWord(pokemonTypes[t.type.name]))
               .join(", ")}
           </p>
           {/* <p>Height: {data.height}</p>
@@ -106,6 +105,9 @@ async function fetchPokemon(
   setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void,
   setSpeciesData: (species: Species | null) => void
 ) {
+  if (!pokemon) {
+    return;
+  }
   const url = "https://pokeapi.co/api/v2/pokemon/" + pokemon;
   setData(null);
   setTypeData(null);
