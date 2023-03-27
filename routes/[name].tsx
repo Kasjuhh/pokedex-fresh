@@ -6,7 +6,7 @@ export default function Greet(props: PageProps) {
     <>
       <Head>
         <link rel="stylesheet" href={asset("./css/style.css")} />
-        <title>Fresh App</title>
+        <title>Pokedex</title>
       </Head>
       <div>
         <PokeApi pokemon={props.params.name}/>
