@@ -35,7 +35,7 @@ export default function PokeApi(props: PokemonProps) {
   return (
     <div>
       <div class="search">
-        <p>Search for any pokemon 😊👇</p> <DarkModeToggle darkMode={false} />
+        <p>Search for any pokemon 😊👇</p>
         <input
           type="text"
           id="pokeInput"
@@ -52,7 +52,8 @@ export default function PokeApi(props: PokemonProps) {
               setSpeciesData
             )
           }
-        ></input>
+        />
+        <DarkModeToggle darkMode={false} />
       </div>
       {error && ( // render error if it exists
         <p style={{ color: "red" }}>{error}</p>

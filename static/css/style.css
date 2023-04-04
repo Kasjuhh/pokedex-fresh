@@ -36,9 +36,6 @@ h5 {
 }
 
 .search {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-top: 10px;
 }
 
@@ -116,7 +113,11 @@ button[type="submit"]:hover {
   list-style: none;
 }
 
-
 .darkModeToggle {
   margin: 0;
+  margin-left: 1rem
+}
+
+a {
+  cursor: pointer;
 }
