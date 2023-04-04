@@ -4,6 +4,7 @@ import { Species } from "../interfaces/Species.tsx";
 import { TypeData } from "../interfaces/TypeData.tsx";
 import { EvolutionStage } from "../interfaces/EvolutionStage.tsx";
 import EvolutionChain from "./EvolutionChain.tsx";
+import DarkModeToggle from "../islands/DarkModeToggle.tsx";
 
 interface PokemonProps {
   pokemon: string;
@@ -34,7 +35,7 @@ export default function PokeApi(props: PokemonProps) {
   return (
     <div>
       <div class="search">
-        <p>Search for any pokemon 😊👇</p>
+        <p>Search for any pokemon 😊👇</p> <DarkModeToggle darkMode={false} />
         <input
           type="text"
           id="pokeInput"
@@ -121,11 +122,13 @@ async function fetchPokemon(
     }
     const data: Pokemon = await response.json();
     setData(data);
-    fetchTypeData(data.types[0].type.url, setTypeData);
+    await fetchTypeData(data.types[0].type.url, setTypeData);
     const species: Species = await fetchPokemonSpecies(pokemon, setSpeciesData);
-    fetchEvolutionChain(species.evolution_chain.url, setEvolutionChain);
+    await fetchEvolutionChain(species.evolution_chain.url, setEvolutionChain);
   } catch (error) {
     setError(error.message);
+  } finally {
+    setTimeout(setColors(), 100)
   }
 }
 
@@ -210,7 +213,7 @@ async function fetchEvolutionChain(
   const stages: EvolutionStage[] = [];
 
   // a helper function that recursively traverses the chain and adds each stage to the array
-  function addStage(stage: any) {
+  async function addStage(stage: any) {
     // create an evolution stage object from the stage data
     const evolutionStage: EvolutionStage = {
       name: titleCaseWord(stage.species.name),
@@ -227,13 +230,13 @@ async function fetchEvolutionChain(
     // if the stage has any evolutions, loop through them and call this function recursively
     if (stage.evolves_to.length > 0) {
       for (const evo of stage.evolves_to) {
-        addStage(evo);
+        await addStage(evo);
       }
     }
   }
 
   // call the helper function with the initial chain object
-  addStage(chain);
+  await addStage(chain);
   setEvolutionChain(stages);
 }
 
@@ -241,6 +244,13 @@ async function fetchEvolutionChain(
 function titleCaseWord(word: string) {
   if (!word) return word;
   return word[0].toUpperCase() + word.slice(1).toLowerCase();
+}
+
+function setColors() {
+  let darkMode = window.getComputedStyle( document.body ,null).getPropertyValue('background-color') === 'rgb(0, 0, 0)';
+  document.querySelectorAll("p, li, h1, h2, h3, a").forEach(p => { 
+      p.style.color = !darkMode ? "black" : "white" ; 
+  });
 }
 
 const pokemonTypes: Record<string, string> = {

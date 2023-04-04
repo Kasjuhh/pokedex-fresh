@@ -5,6 +5,7 @@ body {
   font-family: "Roboto", sans-serif;
   text-align: center;
   font-size: 21px;
+  background-color: black;
 }
 * {
   box-sizing: border-box;
@@ -113,4 +114,9 @@ button[type="submit"]:hover {
   font-size: 21px;
   margin-bottom: 5px;
   list-style: none;
+}
+
+
+.darkModeToggle {
+  margin: 0;
 }

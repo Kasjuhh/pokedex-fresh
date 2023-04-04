@@ -15,9 +15,9 @@ export default function EvolutionChain(evolutionProps: EvolutionProps) {
           // and optionally the min level, trigger, item, and conditions
           // depending on their values
           <div class="evolution">
-            <img src={getPokemonPhotoFromUrl(stage.url)} />
-            <p>
-              <a href={stage.name}>{stage.name}</a>
+            <img src={getPokemonPhotoFromUrl(stage.url)} alt={stage.name} />
+            <p style={styleColorMode()}>
+              <a href={stage.name} style={styleColorMode()}>{stage.name}</a>
               {stage.minLevel && ` at level ${stage.minLevel}`}
               {stage.trigger && ` by ${stage.trigger}`}
               {stage.item && ` with ${stage.item}`}
@@ -40,4 +40,8 @@ function getPokemonPhotoFromUrl(url: string): string {
     id +
     ".png"
   );
+}
+
+function styleColorMode(): string {
+  return document.body.style.backgroundColor === "white" ? "color: black;" : "color: white;";
 }
