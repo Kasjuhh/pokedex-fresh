@@ -110,7 +110,7 @@ async function fetchPokemon(
   if (!pokemon) {
     return;
   }
-  const url = "https://pokeapi.co/api/v2/pokemon/" + pokemon;
+  const url = "http://127.0.0.1:8001/api/v2/pokemon/" + pokemon;
   setData(null);
   setTypeData(null);
   setError(null);
@@ -118,6 +118,7 @@ async function fetchPokemon(
   setSpeciesData(null);
   try {
     const response = await fetch(url);
+    console.log(response);
     if (!response.ok) {
       throw new Error(`Failed to fetch ${pokemon}`);
     }
@@ -155,7 +156,7 @@ async function fetchPokemonSpecies(
   setSpeciesData: (species: Species | null) => void
 ): Promise<Species> {
   // fetch the species json
-  const url = "https://pokeapi.co/api/v2/pokemon-species/" + pokemon;
+  const url = "http://127.0.0.1:8001/api/v2/pokemon-species/" + pokemon;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}`);
