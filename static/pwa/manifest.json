@@ -3,7 +3,7 @@
     "short_name": "Pokedex",
     "display": "standalone",
     "description": "A simple pokedex like website",
-    "start_url": "http://localhost:8000/",
+    "start_url": "https://pokedex-fresh.deno.dev/",
     "orientation": "landscape",
     "background_color": "black",
     "icons": [
