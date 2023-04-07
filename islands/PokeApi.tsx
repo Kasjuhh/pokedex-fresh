@@ -168,7 +168,7 @@ async function fetchPokemonSpecies(
   setSpeciesData: (species: Species | null) => void
 ): Promise<Species> {
   // fetch the species json
-  const url = "http://127.0.0.1:8001/api/v2/pokemon-species/" + pokemon;
+  const url = "https://pokeapi.co/api/v2/pokemon-species/" + pokemon;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}`);
