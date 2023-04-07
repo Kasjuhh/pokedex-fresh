@@ -70,10 +70,9 @@ export default function PokeApi(props: PokemonProps) {
             <img src={data.sprites.front_default} alt={data.name} />
           }
           {shinyToggle &&
-          <img src={data.sprites.front_shiny} alt={data.name} />
+            <img src={data.sprites.front_shiny} alt={data.name} />
           }
-
-          <a class="shinyToggle" onClick={(a) => { toggleShiny(shinyToggle, setShinyToggle)}} > toggle</a>
+          <a class="shinyToggle noselect" onClick={(a) => { toggleShiny(shinyToggle, setShinyToggle)}} >Toggle shiny</a>
           <h2>Type</h2>
           <p>
             {data.types
@@ -123,7 +122,7 @@ async function fetchPokemon(
   if (!pokemon) {
     return;
   }
-  const url = `http://localhost:8001/api/v2/pokemon/` + pokemon;
+  const url = `https://pokeapi.co/api/v2/pokemon/` + pokemon;
   setData(null);
   setTypeData(null);
   setError(null);
