@@ -8,7 +8,6 @@ const addResourcesToCache = async (resources) => {
   };
   
   self.addEventListener("install", (event) => {
-    console.log(workbox);
     event.waitUntil(
       addResourcesToCache([
         "/css/style.css",
