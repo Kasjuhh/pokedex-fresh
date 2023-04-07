@@ -21,6 +21,8 @@ export default function PokeApi(props: PokemonProps) {
   );
   const [speciesData, setSpeciesData] = useState<Species | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [shinyToggle, setShinyToggle] = useState<boolean | false>(false);
+
   window.onload = () => {
     fetchPokemon(
       input.toLowerCase(),
@@ -28,8 +30,10 @@ export default function PokeApi(props: PokemonProps) {
       setTypeData,
       setError,
       setEvolutionChain,
-      setSpeciesData
+      setSpeciesData,
+      setShinyToggle
     );
+    navigator.serviceWorker.register('./pwa/sw.js');
   };
 
   return (
@@ -49,7 +53,8 @@ export default function PokeApi(props: PokemonProps) {
               setTypeData,
               setError,
               setEvolutionChain,
-              setSpeciesData
+              setSpeciesData,
+              setShinyToggle
             )
           }
         />
@@ -61,7 +66,14 @@ export default function PokeApi(props: PokemonProps) {
       {data && ( // render data if pokemon it exists
         <div class="pokemon mt-8 markdown-body">
           <h1>{titleCaseWord(data.name)}</h1>
-          <img src={data.sprites.front_default} alt={data.name} />
+          {!shinyToggle &&
+            <img src={data.sprites.front_default} alt={data.name} />
+          }
+          {shinyToggle &&
+          <img src={data.sprites.front_shiny} alt={data.name} />
+          }
+
+          <a class="shinyToggle" onClick={(a) => { toggleShiny(shinyToggle, setShinyToggle)}} > toggle</a>
           <h2>Type</h2>
           <p>
             {data.types
@@ -105,20 +117,21 @@ async function fetchPokemon(
   setTypeData: (typeData: TypeData | null) => void,
   setError: (error: string | null) => void,
   setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void,
-  setSpeciesData: (species: Species | null) => void
+  setSpeciesData: (species: Species | null) => void,
+  setShinyToggle: (shinyToggle: boolean | false) => void
 ) {
   if (!pokemon) {
     return;
   }
-  const url = "http://127.0.0.1:8001/api/v2/pokemon/" + pokemon;
+  const url = `http://localhost:8001/api/v2/pokemon/` + pokemon;
   setData(null);
   setTypeData(null);
   setError(null);
   setEvolutionChain(null);
   setSpeciesData(null);
+  setShinyToggle(false);
   try {
     const response = await fetch(url);
-    console.log(response);
     if (!response.ok) {
       throw new Error(`Failed to fetch ${pokemon}`);
     }
@@ -182,7 +195,8 @@ async function keyDown(
   setTypeData: (typeData: TypeData | null) => void,
   setError: (error: string | null) => void,
   setEvolutionChain: (evolutionStages: EvolutionStage[] | null) => void,
-  setSpeciesData: (species: Species | null) => void
+  setSpeciesData: (species: Species | null) => void,
+  setShinyToggle: (shiny: boolean | false) => void
 ) {
   if (e.code === "Enter") {
     await fetchPokemon(
@@ -191,7 +205,8 @@ async function keyDown(
       setTypeData,
       setError,
       setEvolutionChain,
-      setSpeciesData
+      setSpeciesData,
+      setShinyToggle
     );
   }
 }
@@ -275,3 +290,9 @@ const pokemonTypes: Record<string, string> = {
   steel: "⚙️",
   fairy: "✨",
 };
+
+function toggleShiny(
+  shinyToggle: boolean,
+  setShinyToggle: (shiny: boolean | false) => void) {
+  setShinyToggle(!shinyToggle);
+}

@@ -8,7 +8,7 @@ export default function EvolutionChain(evolutionProps: EvolutionProps) {
   const evolutionChain: EvolutionStage[] = evolutionProps.evolutionChain;
   return (
     <div>
-      <h2>Evolution Chain</h2>
+      <h2 style={styleColorMode()}>Evolution Chain</h2>
       <ul class="evolutionList">
         {evolutionChain.map((stage) => (
           // display the name and url of the evolved species
