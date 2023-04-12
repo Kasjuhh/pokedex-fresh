@@ -8,7 +8,6 @@ export default function DarkModeToggle(props: DarkModeProps) {
     const [darkMode, toggleDarkModeData] = useState<boolean | null>(false);
     useEffect(() => {
         initTheme(
-            darkMode,
             toggleDarkModeData
         );
     }, [])
@@ -27,11 +26,9 @@ function toggleDarkMode1(darkMode: boolean,
     setMode(!darkMode, toggleDarkModeData);
 }
 
-function initTheme(darkMode: boolean,
-                  toggleDarkModeData: (data: boolean | null) => void) {
+function initTheme(toggleDarkModeData: (data: boolean | null) => void) {
     const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    toggleDarkModeData(prefersDarkMode);
-    setMode(!prefersDarkMode, toggleDarkModeData);
+    toggleDarkModeData(!prefersDarkMode);
 }
 
 function setMode(darkMode: boolean,

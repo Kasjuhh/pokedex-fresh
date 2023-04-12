@@ -3,7 +3,6 @@ import PokeApi from "../islands/PokeApi.tsx";
 import { useEffect } from "https://esm.sh/preact@10.11.0/hooks";
 
 export default function Home() {
-  useEffect(() => {loadSw()}, []);
   return (
     <>
       <Head>
@@ -18,3 +17,7 @@ export default function Home() {
     </>
   );
 }
+
+// function getDarkOrLightModeStyle() {
+//   return window.matchMedia('(prefers-color-scheme: dark)').matches ? asset("./css/style.css") : asset("./css/dark.css");
+// }

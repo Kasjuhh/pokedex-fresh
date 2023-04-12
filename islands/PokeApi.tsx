@@ -141,8 +141,6 @@ async function fetchPokemon(
     await fetchEvolutionChain(species.evolution_chain.url, setEvolutionChain);
   } catch (error) {
     setError(error.message);
-  } finally {
-    setTimeout(setColors(), 100)
   }
 }
 
@@ -260,13 +258,6 @@ async function fetchEvolutionChain(
 function titleCaseWord(word: string) {
   if (!word) return word;
   return word[0].toUpperCase() + word.slice(1).toLowerCase();
-}
-
-function setColors() {
-  let darkMode = window.getComputedStyle( document.body ,null).getPropertyValue('background-color') === 'rgb(0, 0, 0)';
-  document.querySelectorAll("p, li, h1, h2, h3, a").forEach(p => { 
-      p.style.color = !darkMode ? "black" : "white" ; 
-  });
 }
 
 const pokemonTypes: Record<string, string> = {

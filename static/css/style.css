@@ -139,3 +139,22 @@ a {
     flex-direction: column
   }
 }
+
+@media screen and (prefers-color-scheme: dark) {
+  p, a, h1, h2, h3, h4, li {
+    color: #fff;
+  }
+  body {
+    background-color: black;
+  }
+}
+
+
+@media screen and (prefers-color-scheme: light) {
+  p, a, h1, h2, h3, h4, li {
+    color: black;
+  }
+  body {
+    background-color: white;
+  }
+}
